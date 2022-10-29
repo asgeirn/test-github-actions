@@ -1,0 +1,13 @@
+name: Mortens Police Car
+
+on:
+  workflow_dispatch:
+
+jobs:
+  hello:
+    runs-on: self-hosted
+
+    steps:
+      - run: |
+          Invoke-RestMethod http://localhost:8934/blink1/pattern/play?pname=policecar
+        shell: powershell
