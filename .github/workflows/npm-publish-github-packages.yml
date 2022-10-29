@@ -33,6 +33,14 @@ jobs:
         id: version
         uses: release-kit/semver@v1
       - run: echo "${{ steps.version.outputs.full }}"
+      - name: Update package.json version
+        uses: jaywcjlove/github-action-package@v1.2.1
+        with:
+          data: |
+            {
+              "version": "${{ steps.version.outputs.full }}"
+            }
+      - run: cat package.json
       - run: npm ci
       - run: npm publish
         env:
