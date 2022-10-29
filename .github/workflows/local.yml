@@ -1,0 +1,13 @@
+name: Local run
+
+on:
+  workflow_dispatch:
+
+jobs:
+  hello:
+    runs-on: self-hosted
+
+    steps:
+      - run: |
+          Write-Host hello
+        shell: powershell
