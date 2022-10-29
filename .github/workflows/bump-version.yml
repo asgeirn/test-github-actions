@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: |
-          echo current_version=$(jq .version package.json) >> $GITHUB_ENV
+          echo current_version=$(jq -r .version package.json) >> $GITHUB_ENV
       - name: Bump release version
         id: bump_version
         uses: christian-draeger/increment-semantic-version@1.0.2
