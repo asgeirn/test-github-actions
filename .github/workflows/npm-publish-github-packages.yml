@@ -32,13 +32,12 @@ jobs:
         with:
           input: ${{ github.ref_name }}
       - run: echo "${{ steps.version.outputs.full }}"
-      - name: Update package.json version
-        uses: jaywcjlove/github-action-package@v1.2.1
-        with:
-          data: |
-            {
-              "version": "${{ steps.version.outputs.full }}"
-            }
+      - run: |
+          import json
+          package = json.load(open("package.json"))
+          package["version"] = "${{ steps.version.outputs.full }}"
+          json.dump(package, open("package.json", "wt"), indent=2)
+        shell: python
       - run: |
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git config --global user.name 'github-actions[bot]'
