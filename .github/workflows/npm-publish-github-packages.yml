@@ -21,14 +21,11 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      packages: write
+      contents: write
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
         with:
-          node-version: 16
-          registry-url: https://npm.pkg.github.com/
+          ref: main
       - name: Parse version from tag
         id: version
         uses: release-kit/semver@v1
@@ -40,8 +37,9 @@ jobs:
             {
               "version": "${{ steps.version.outputs.full }}"
             }
-      - run: cat package.json
-      - run: npm ci
-      - run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - run: |
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git config --global user.name 'github-actions[bot]'
+          git add package.json && \
+          git commit -m "Updated to version ${{ steps.version.outputs.full }}" && \
+          git push origin main
