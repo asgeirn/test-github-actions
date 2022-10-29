@@ -5,5 +5,5 @@ RUN npm ci
 
 FROM gcr.io/distroless/nodejs:16
 WORKDIR /app
-COPY --from=builder /src /app
-ENTRYPOINT [ "index.js" ]
+COPY --from=builder /src/ /app/
+CMD [ "index.js" ]
