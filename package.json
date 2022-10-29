@@ -1,5 +1,5 @@
 {
-  "name": "miles",
+  "name": "@miles-no/milescamp2022-github-actions",
   "version": "1.0.0",
   "description": "Hello",
   "main": "index.js",
@@ -7,5 +7,9 @@
   "license": "ISC",
   "dependencies": {
     "requests": "^0.3.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/miles-no/milescamp2022-github-actions.git"
   }
 }
