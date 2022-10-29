@@ -29,6 +29,8 @@ jobs:
       - name: Parse version from tag
         id: version
         uses: release-kit/semver@v1
+        with:
+          input: ${{ github.ref_name }}
       - run: echo "${{ steps.version.outputs.full }}"
       - name: Update package.json version
         uses: jaywcjlove/github-action-package@v1.2.1
