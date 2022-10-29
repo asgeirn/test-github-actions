@@ -13,14 +13,15 @@ on:
           - major
           - feature
           - bug
-          - alpha
-          - beta
           - rc
+          - beta
+          - alpha
 
 jobs:
   bump:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - run: |
           echo current_version=$(jq .version package.json) >> $GITHUB_ENV
       - name: Bump release version
