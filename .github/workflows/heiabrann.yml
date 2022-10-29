@@ -1,0 +1,13 @@
+name: Local fun run
+
+on:
+  workflow_dispatch:
+
+jobs:
+  hello:
+    runs-on: self-hosted
+
+    steps:
+      - uses: mscoutermarsh/ascii-art-action@master
+        with:
+          text: 'HEIA BRANN!'
