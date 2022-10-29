@@ -1,4 +1,4 @@
-name: Local run
+name: Local run - jone
 
 on:
   workflow_dispatch:
