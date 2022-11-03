@@ -23,15 +23,18 @@ jobs:
           jq -r "\"version=\" + .version" package.json >> $GITHUB_OUTPUT
       - id: fragment
         run: |
+          import os
           import json
           labels = set(json.loads("""${{ toJSON(github.event.pull_request.labels.*.name) }}"""))
           choices = set(("major", "feature", "bug", "rc", "beta", "alpha"))
           selected = list(labels & choices)
+          print(f"selected: {selected}")
           if len(selected) == 1:
-              print(f"selected={selected[0]}", file=open("$GITHUB_OUTPUT", "a"))
+              print(f"selected={selected[0]}", flush=True, file=open(os.environ["GITHUB_OUTPUT"], "a"))
           else:
               exit(1)
         shell: python
+      - run: echo ${{ steps.fragment.outputs.selected }}
       - name: Bump release version
         id: bump_version
         uses: christian-draeger/increment-semantic-version@1.0.2
