@@ -41,3 +41,4 @@ GitHub fra kommandolinjen.  For GitHub workflows er disse kommandoene nyttige:
 - `gh workflow run <file>.yaml -f <field>=<value>`
 - `gh run watch`
 - `gh run view`
+- Thu Nov  3 14:46:49 CET 2022
