@@ -52,3 +52,5 @@ jobs:
           git add package.json && \
           git commit -m "Updated to version ${{ steps.bump_version.outputs.next-version }}" && \
           git push origin main
+      - run: |
+          gh release create v${{ steps.bump_version.outputs.next-version }} --generate-notes
