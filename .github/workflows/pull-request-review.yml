@@ -7,14 +7,14 @@ on:
 
 jobs:
   bump:
-    #if: contains(github.event.pull_request.labels.*.name, 'release')
+    #if: contains(toJSON(github.event.pull_request.labels.*.name), 'release')
     runs-on: ubuntu-latest
     permissions:
       contents: write
       packages: write
     steps:
       - run: |
-          print('''${{ github.event.pull_request.labels.*.name }}''')
+          print('''${{ toJSON(github.event.pull_request.labels.*.name) }}''')
         shell: python
       - uses: actions/checkout@v3
       - id: current
@@ -23,7 +23,7 @@ jobs:
       - id: fragment
         run: |
           import json
-          labels = set(json.loads("""${{ github.event.pull_request.labels.*.name }}"""))
+          labels = set(json.loads("""${{ toJSON(github.event.pull_request.labels.*.name) }}"""))
           choices = set(("major", "feature", "bug", "rc", "beta", "alpha"))
           selected = list(labels & choices)
           if len(selected) == 1:
