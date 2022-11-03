@@ -1,5 +1,5 @@
 {
-  "name": "@miles-no/milescamp2022-github-actions",
+  "name": "@asgeirn/test-github-actions",
   "version": "0.0.1-rc3",
   "description": "Hello",
   "main": "index.js",
@@ -10,6 +10,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/miles-no/milescamp2022-github-actions.git"
+    "url": "https://github.com/asgeirn/test-github-actions.git"
   }
 }
