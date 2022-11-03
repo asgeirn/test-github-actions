@@ -7,12 +7,14 @@ on:
 
 jobs:
   bump:
-    if: contains(github.event.pull_request.labels, 'release')
+#    if: contains(github.event.pull_request.labels, 'release')
     runs-on: ubuntu-latest
     permissions:
       contents: write
       packages: write
     steps:
+      - run: |
+          print('''${{ github.event.pull_request.labels }}''')
       - uses: actions/checkout@v3
       - id: current
         run: |
