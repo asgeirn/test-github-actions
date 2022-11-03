@@ -54,3 +54,5 @@ jobs:
           git push origin main
       - run: |
           gh release create v${{ steps.bump_version.outputs.next-version }} --generate-notes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
