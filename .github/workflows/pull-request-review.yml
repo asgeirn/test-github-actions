@@ -13,6 +13,7 @@ jobs:
       contents: write
       packages: write
     steps:
+      - run: env
       - run: |
           print('''${{ toJSON(github.event.pull_request.labels.*.name) }}''')
         shell: python
@@ -27,7 +28,7 @@ jobs:
           choices = set(("major", "feature", "bug", "rc", "beta", "alpha"))
           selected = list(labels & choices)
           if len(selected) == 1:
-              print(f"selected={selected[0]}", file=open("${{ env.GITHUB_OUTPUT }}", "a"))
+              print(f"selected={selected[0]}", file=open("$GITHUB_OUTPUT", "a"))
           else:
               exit(1)
         shell: python
