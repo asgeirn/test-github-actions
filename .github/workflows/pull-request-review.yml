@@ -1,0 +1,62 @@
+name: Bump version on approval
+
+on:
+  pull_request_review:
+    types:
+      - submitted
+
+jobs:
+  bump:
+    if: github.event.review.state == 'approved' && contains(github.event.pull_request.labels, 'release')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - uses: actions/checkout@v3
+      - id: current
+        run: |
+          jq -r "\"version=\" + .version" package.json >> $GITHUB_OUTPUT
+      - id: fragment
+        run: |
+          import json
+
+          labels = set(json.loads("""${{ github.event.pull_request.labels }}"""))
+          choices = set(("major", "feature", "bug", "rc", "beta", "alpha"))
+          selected = list(labels & choices)
+          if len(selected) == 1:
+              print(f"selected={selected[0]}", file=open("${{ env.GITHUB_OUTPUT }}", "a"))
+          else:
+              exit(1)
+        shell: python
+      - name: Bump release version
+        id: bump_version
+        uses: christian-draeger/increment-semantic-version@1.0.2
+        with:
+          current-version: ${{ steps.current.outputs.version }}
+          version-fragment: ${{ steps.fragment.outputs.selected }}
+      - run: echo ${{ steps.bump_version.outputs.next-version }}
+      - run: |
+          import json
+          package = json.load(open("package.json"))
+          package["version"] = "${{ steps.bump_version.outputs.next-version }}"
+          json.dump(package, open("package.json", "wt"), indent=2)
+        shell: python
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          registry-url: 'https://npm.pkg.github.com'
+      - run: npm ci
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: |
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git config --global user.name 'github-actions[bot]'
+          git add package.json && \
+          git commit -m "Updated to version ${{ steps.bump_version.outputs.next-version }}" && \
+          git push origin main
+      - run: |
+          gh release create v${{ steps.bump_version.outputs.next-version }} --generate-notes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
