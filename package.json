@@ -1,6 +1,6 @@
 {
   "name": "@asgeirn/test-github-actions",
-  "version": "0.0.1-rc1",
+  "version": "0.0.1-alpha1",
   "description": "Hello",
   "main": "index.js",
   "author": "",
