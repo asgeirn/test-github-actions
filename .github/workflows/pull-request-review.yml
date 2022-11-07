@@ -17,6 +17,8 @@ jobs:
           print('''${{ toJSON(github.event.pull_request.labels.*.name) }}''')
         shell: python
       - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
       - id: current
         run: |
           jq -r "\"version=\" + .version" package.json >> $GITHUB_OUTPUT
