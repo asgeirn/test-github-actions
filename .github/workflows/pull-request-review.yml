@@ -11,13 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      packages: write
     steps:
       - run: env
       - run: |
           print('''${{ toJSON(github.event.pull_request.labels.*.name) }}''')
         shell: python
       - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
       - id: current
         run: |
           jq -r "\"version=\" + .version" package.json >> $GITHUB_OUTPUT
@@ -53,16 +54,9 @@ jobs:
           node-version: 16.x
           registry-url: 'https://npm.pkg.github.com'
       - run: npm ci
-      - run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: |
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git config --global user.name 'github-actions[bot]'
           git add package.json && \
           git commit -m "Updated to version ${{ steps.bump_version.outputs.next-version }}" && \
-          git push origin main
-      - run: |
-          gh release create v${{ steps.bump_version.outputs.next-version }} --generate-notes
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          git push
