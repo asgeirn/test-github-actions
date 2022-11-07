@@ -1,4 +1,4 @@
-name: Bump version on release label
+name: Publish release on PR close
 
 on:
   pull_request_target:

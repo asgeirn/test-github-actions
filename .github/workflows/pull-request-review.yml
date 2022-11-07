@@ -57,4 +57,4 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git add package.json && \
           git commit -m "Updated to version ${{ steps.bump_version.outputs.next-version }}" && \
-          git push origin main
+          git push
