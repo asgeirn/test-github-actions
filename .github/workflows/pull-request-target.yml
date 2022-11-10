@@ -6,8 +6,21 @@ on:
       - closed
 
 jobs:
+  check:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          cat <<EOF
+          ${{ toJSON(github.event.pull_request) }}
+          EOF
+      - run: |
+          cat <<EOF
+          ${{ toJSON(github.event.pull_request.labels.*.name) }}
+          EOF
   release:
-    if: github.event.pull_request.merged == true && contains(toJSON(github.event.pull_request.labels.*.name), 'release')
+    needs: check
+    if: contains(toJSON(github.event.pull_request.labels.*.name), 'release')
     runs-on: ubuntu-latest
     permissions:
       contents: write
