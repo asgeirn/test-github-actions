@@ -38,7 +38,7 @@ jobs:
       - run: echo ${{ steps.fragment.outputs.selected }}
       - name: Bump release version
         id: bump_version
-        uses: christian-draeger/increment-semantic-version@1.0.2
+        uses: asgeirn/increment-semantic-version@v1
         with:
           current-version: ${{ steps.current.outputs.version }}
           version-fragment: ${{ steps.fragment.outputs.selected }}
